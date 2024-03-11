@@ -11,8 +11,15 @@ import javax.sql.DataSource;
 import school21.spring.service.models.User;
 import school21.spring.service.repositories.UsersRepository;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+
+@Component("usersRepositoryJdbcTemplate")
 public class UsersRepositoryJdbcTemplateImpl implements UsersRepository{
     
+    @Autowired
+    @Qualifier("SpringDataSource")
     private final DataSource dataSource;
     
     public UsersRepositoryJdbcTemplateImpl(DataSource dataSource) {

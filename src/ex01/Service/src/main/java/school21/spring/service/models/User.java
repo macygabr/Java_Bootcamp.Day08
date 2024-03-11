@@ -29,10 +29,10 @@ public class User {
     @Override
     public String toString() {
         return
-                "User {\n\tid = " +
+                "User {id = " +
                 id +
-                ",\n\temail = " +
+                ", email = " +
                 email +
-                "\n}\n";
+                "}";
     }
 }

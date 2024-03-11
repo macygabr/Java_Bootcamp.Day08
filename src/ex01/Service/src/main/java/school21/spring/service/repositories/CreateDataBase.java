@@ -11,6 +11,7 @@ public class CreateDataBase {
     private DataSource dataSource;
     public CreateDataBase(DataSource dataSource) {
         this.dataSource = dataSource;
+
         try {
             dataSource.getConnection().createStatement().executeUpdate("DROP TABLE IF EXISTS Users");
             dataSource.getConnection().createStatement().executeUpdate("CREATE TABLE IF NOT EXISTS Users ( id INTEGER, email TEXT);");
@@ -27,7 +28,7 @@ public class CreateDataBase {
         
         for(int i = 1; i<=10; i++){
             statement.setInt(1, i);
-            statement.setString(2, "test");
+            statement.setString(2, "test" + i);
             statement.executeUpdate();
         }
     }
