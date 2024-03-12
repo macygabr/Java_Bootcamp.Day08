@@ -1,8 +1,22 @@
 package school21.spring.service.models;
 
 
+import javax.persistence.Table;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
+@Table(name = "Users")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    
+    @Column
     private String email;
 
     public User(){}
@@ -29,10 +43,10 @@ public class User {
     @Override
     public String toString() {
         return
-                "User {\n\tid = " +
+                "User {id = " +
                 id +
-                ",\n\temail = " +
+                ", email = " +
                 email +
-                "\n}\n";
+                "}";
     }
 }
