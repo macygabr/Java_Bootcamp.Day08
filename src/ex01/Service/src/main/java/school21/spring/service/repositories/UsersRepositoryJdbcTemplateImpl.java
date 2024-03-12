@@ -16,7 +16,6 @@ public class UsersRepositoryJdbcTemplateImpl implements UsersRepository{
     
     public UsersRepositoryJdbcTemplateImpl(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
-        new CreateDataBase(dataSource);
     }
 
     @Override

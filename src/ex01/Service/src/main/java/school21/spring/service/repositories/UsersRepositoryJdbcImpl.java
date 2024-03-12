@@ -20,7 +20,6 @@ public class UsersRepositoryJdbcImpl implements UsersRepository{
 
     public UsersRepositoryJdbcImpl(DataSource dataSource) {
         this.dataSource = dataSource;
-        new CreateDataBase(dataSource);
     }
 
     @Override
