@@ -1,6 +1,4 @@
 package school21.spring.service.models;
-
-
 import javax.persistence.Table;
 
 import javax.persistence.Column;
@@ -19,9 +17,15 @@ public class User {
     @Column
     private String email;
 
-    public User(){}
+    @Column
+    private String passwd;
 
     public User(long id, String email) {
+        this.id = id;
+        this.email = email;
+    }
+
+    public User(long id, String email, String passwd) {
         this.id = id;
         this.email = email;
     }
@@ -47,6 +51,6 @@ public class User {
                 id +
                 ", email = " +
                 email +
-                "}";
+                "} ";
     }
 }

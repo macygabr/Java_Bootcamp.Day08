@@ -1,21 +1,22 @@
 package school21.spring.service.application;
 
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import school21.spring.service.repositories.UsersRepository;
-import org.springframework.context.*;
 import school21.spring.service.models.*;
+import school21.spring.service.config.*;
+import school21.spring.service.repositories.*;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+
 
 public class Main {
     public static void main(String[] args){
         CreateDataBase();
-
-        ApplicationContext context = new ClassPathXmlApplicationContext("context.xml");
+        ApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
         UsersRepository usersRepository = context.getBean("usersRepositoryJdbc", UsersRepository.class);
         System.out.println(usersRepository.findAll());
         usersRepository = context.getBean("usersRepositoryJdbcTemplate", UsersRepository.class);
@@ -51,10 +52,10 @@ public class Main {
 
         System.out.println();
         usersRepository = context.getBean("usersRepositoryJdbc", UsersRepository.class);
-        usersRepository.save(new User(30L, "\033[32memail\033[0m"));
+        usersRepository.save(new User(30L, "email"));
         System.out.println(usersRepository.findAll());
         usersRepository = context.getBean("usersRepositoryJdbcTemplate", UsersRepository.class);
-        usersRepository.save(new User(31L, "\033[31memail\033[0m"));
+        usersRepository.save(new User(31L, "email"));
         System.out.println(usersRepository.findAll());
     }
 

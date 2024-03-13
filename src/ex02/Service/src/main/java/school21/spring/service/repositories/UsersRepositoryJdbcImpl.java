@@ -7,25 +7,34 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
-import school21.spring.service.models.User;
-import school21.spring.service.repositories.UsersRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
+import school21.spring.service.models.User;
+
+@Component("usersRepositoryJdbc")
 public class UsersRepositoryJdbcImpl implements UsersRepository{
     
+    @Autowired
+    @Qualifier("HikariDataSource")
     private final DataSource dataSource;
-
+    
     public UsersRepositoryJdbcImpl(DataSource dataSource) {
         this.dataSource = dataSource;
+    }
+
+    public UsersRepositoryJdbcImpl() {
+        this.dataSource = null;
     }
 
     @Override
     public <T> T findById(long id) {
         try (Connection connection = dataSource.getConnection()){
-             PreparedStatement preparedStatement = connection.prepareStatement("select * from Users where id = ?;");
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Users WHERE id = ?;");
              preparedStatement.setLong(1, id);
              ResultSet resultSet = preparedStatement.executeQuery();
              if (!resultSet.next()) return null;
@@ -51,7 +60,7 @@ public class UsersRepositoryJdbcImpl implements UsersRepository{
     public <T> void save(T obj){
         User entity = (User)obj;
         try (Connection connection = dataSource.getConnection()){
-            PreparedStatement preparedStatement = connection.prepareStatement("insert into Users values(?, ?);");
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO Users VALUES(?, ?);");
             preparedStatement.setLong(1, entity.getId());
             preparedStatement.setString(2, entity.getEmail());
             preparedStatement.executeUpdate();
@@ -64,7 +73,7 @@ public class UsersRepositoryJdbcImpl implements UsersRepository{
     public <T> void update(T obj) {
         User entity = (User)obj;
         try (Connection connection = dataSource.getConnection()){
-            PreparedStatement preparedStatement = connection.prepareStatement("update Users set email = ? where id = ?;");
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE Users SET email = ? WHERE id = ?;");
             preparedStatement.setString(1, entity.getEmail());
             preparedStatement.setLong(2, entity.getId());
             preparedStatement.executeUpdate();
@@ -76,7 +85,7 @@ public class UsersRepositoryJdbcImpl implements UsersRepository{
     @Override
     public void delete(Long id){
         try (Connection connection = dataSource.getConnection()){
-            PreparedStatement preparedStatement = connection.prepareStatement("delete from Users where id = ?;");
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM Users WHERE id = ?;");
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -85,13 +94,12 @@ public class UsersRepositoryJdbcImpl implements UsersRepository{
     }
     
     @Override
-    public <T> Optional<T> findByEmail(String email){
+    public <T> Optional<T> findByEmail(String email) {
         try (Connection connection = dataSource.getConnection()){
-            PreparedStatement preparedStatement = connection.prepareStatement(
-                    "select * from Users where email = ?;"
-            );
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Users WHERE email = ?;");
             preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
+            
             if (!resultSet.next()) return Optional.empty();
             return Optional.of((T) new User(resultSet.getLong("id"),resultSet.getString("email")));
         } catch (SQLException e) {
